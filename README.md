@@ -1,66 +1,84 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistema de Gestão Financeira Casal 💰
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-11-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
 
-## About Laravel
+Uma aplicação robusta de controle financeiro pessoal e familiar desenvolvida em **Laravel 11**. Projetada para garantir precisão nos relatórios financeiros diários, controle rigoroso de cartões de crédito e planejamento em supermercados.  
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Este projeto adere fortemente a conceitos maduros de desenvolvimento de software, contando com rastreabilidade total de logs, proteções de segurança em ambiente de produção (rate limiting, secure headers, force HTTPS) e camadas de autenticação nativa.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Funcionalidades Principais
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+*   **Dashboard Executivo:**
+    *   Painel consolidado com a saúde financeira (saldo unificado vs despesas provisionadas e contas a pagar).
+    *   Gráficos dinâmicos e relatórios filtráveis via Chart.js.
+*   **Gestão de Contas Bancárias:**
+    *   Controle de saldos manuais de Contas Correntes, Poupanças e Investimentos.
+    *   💡 **Inteligência de Benefícios:** Contas marcadas como benefício (ex: Vale-Alimentação/Refeição) não integram artificialmente a soma do "Saldo Líquido" do casal.
+*   **Gestão de Transações e Pagamentos:**
+    *   Registro de despesas corporativas ou eventuais e receitas de salário/dividendos.
+    *   Gerenciamento de despesas recorrentes mensais, com capacidade de prever contas do mês vindouro automaticamente.
+*   **Controle de Cartões de Crédito:**
+    *   Integração total do planejamento de faturas vinculadas aos cartões.
+    *   Ao pagar a fatura, a movimentação é descontada do saldo e quitada do período vigente.
+*   **Módulo de Compras (Supermercado Inteligente):**
+    *   Listas dinâmicas: adicione itens com quantidades e projeções ("Valor Estimado").
+    *   Acompanhe o gap (Diferença) ao comparar com o modelo atual ("Valor Real").
+    *   A tela de checkout de compras permite finalização híbrida (pagamento distribuído entre Mão, Cartão de Crédito ou Saldo de Múltiplas Contas).
+*   **Segurança e Privacidade (WORM Tracking):**
+    *   Rotinas enclausuradas (Auth) para proteção de ponta-a-ponta contra invasões anônimas.
+    *   Acompanhado pelo pacote de _Audit Trail_ (`spatie/laravel-activitylog`). Todas as operações de criação, modificação ou destruição de registros são versionadas sem capacidade preestabelecida de edição dos logs. Tudo é rastreável (Quem mudou, Quando e O que alterou).
 
-## Learning Laravel
+## 🛠️ Tecnologias e Dependências
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+*   **Framework:** Laravel 11 (PHP 8.2+)
+*   **Frontend:** Bootstrap 5 nativo (Blade Templates), sem complexidade adicional de Node/npm build pipes, priorizando a estabilidade visual e alta reusabilidade de UI.
+*   **Auditoria:** `spatie/laravel-activitylog` (Monitoramento nativo sobre o Eloquent)
+*   **SGBD Compatível:** MySQL 8+ / PostgreSQL (Totalmente refatorado utilizando Migrations escaláveis do Laravel).
+*   **Estabilidade Temporal:** `Carbon`
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## ⚙️ Configuração Local e Instalação
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Siga os passos abaixo para estabelecer a arquitetura do projeto no seu ambiente.
 
-## Laravel Sponsors
+1. **Clone o repósitório:**
+    ```sh
+    git clone https://github.com/AndreFilippe/financas.git
+    cd financas
+    ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+2. **Instale as dependências via Composer:**
+    ```sh
+    composer install --no-dev --optimize-autoloader
+    ```
 
-### Premium Partners
+3. **Configure as variáveis de ambiente:**
+    ```sh
+    cp .env.example .env
+    php artisan key:generate
+    ```
+    Edite o arquivo `.env` para apontar p/ seu banco de dados correto.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+4. **Prepare as Migrations e Seeds (Banco de Dados):**
+    ```sh
+    php artisan migrate
+    ```
+    ⚠️ **Importante:** Inicialize também o banco populando o SuperAdmin inicial (Obrigatório, toda a rota é bloqueada).
+    ```sh
+    php artisan db:seed
+    ```
 
-## Contributing
+5. **Inicie o servidor e aproveite (Em ambiente Dev):**
+    ```sh
+    php artisan serve
+    ```
+    *Para Login utilize as credenciais populadas pelo arquivo DatabaseSeeder.php.*
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🛡️ Notas de Deploy em Nuvem / Produção
 
-## Code of Conduct
+Esta aplicação está atrelada à salvaguardas voltadas para instâncias web. Em seu arquivo `AppServiceProvider.php`, o Force HTTPS é habilitado diretamente no ambiente de `production` garantindo tunelamento, aliado ao bloqueador de excessos massivos (`Global Route Throttle 60/1`) presente diretamente no kernel principal (`bootstrap/app.php`), que corta agressões contínuas e força expiração a bots/scrappers de tráfego. Adicionalmente, mitigadores Header (ex: `X-XSS-Protection`) estão vigentes pelo handler de `SecurityHeadersMiddleware`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 📜 Licença
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Distribuído sob licença do Autor. Este repositório foca em gestão financeira de escopo privado.
