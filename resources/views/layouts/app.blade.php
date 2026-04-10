@@ -15,22 +15,52 @@
     
     <style>
         body { background-color: #f8f9fa; }
-        .sidebar { min-height: 100vh; background: #212529; color: white; }
-        .sidebar a { color: rgba(255,255,255,.75); text-decoration: none; padding: 10px 15px; display: block; }
+        .sidebar { background: #212529 !important; color: white; }
+        .sidebar a { color: rgba(255,255,255,.75); text-decoration: none; padding: 12px 15px; display: block; transition: all 0.2s;}
         .sidebar a:hover, .sidebar a.active { color: white; background: rgba(255,255,255,.1); border-radius: 5px; }
         .card { border: none; box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075); margin-bottom: 20px; }
+        
+        @media (min-width: 768px) {
+            .sidebar-bg { 
+                min-height: 100vh; 
+                position: sticky !important; 
+                top: 0; 
+                display: block !important; 
+                background-color: #212529 !important;
+            }
+        }
+        .sidebar-bg { background-color: #212529 !important; color: white; }
+        
+        /* Mobile adjustments */
+        @media (max-width: 767.98px) {
+            .table-responsive { border: 0; }
+        }
     </style>
     @stack('styles')
 </head>
 <body>
 
+<!-- Mobile Header -->
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-2 shadow d-md-none justify-content-between align-items-center">
+    <a class="navbar-brand me-0 px-3 fw-bold flex-grow-1" href="{{ route('dashboard') }}">
+        <i class="bi bi-wallet2 text-primary"></i> Finanças 
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</header>
+
 <div class="container-fluid">
     <div class="row">
-        <!-- Sidebar -->
-        <nav class="col-md-3 col-lg-2 d-md-block sidebar py-3 px-2 collapse" id="sidebarMenu">
-            <div class="position-sticky">
-                <h4 class="text-center mb-4"><i class="bi bi-wallet2 text-primary"></i> Finanças</h4>
-                <ul class="nav flex-column gap-1">
+        <!-- Sidebar Offcanvas -->
+        <div class="col-md-3 col-lg-2 p-0 sidebar-bg offcanvas-md offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+            <div class="offcanvas-header d-md-none border-bottom border-secondary">
+                <h5 class="offcanvas-title text-white" id="sidebarMenuLabel"><i class="bi bi-wallet2 text-primary"></i> Finanças</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 sidebar h-100 overflow-y-auto">
+                <h4 class="text-center mb-4 d-none d-md-block mt-3 text-white"><i class="bi bi-wallet2 text-primary"></i> Finanças</h4>
+                <ul class="nav flex-column gap-1 w-100 px-2 pb-5 mb-auto">
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
                             <i class="bi bi-speedometer2 me-2"></i> Dashboard
@@ -96,13 +126,13 @@
                     </li>
                 </ul>
             </div>
-        </nav>
+        </div>
 
         <!-- Main Content -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-3">
-                <h1 class="h3">@yield('page_title')</h1>
-                <div class="btn-toolbar mb-2 mb-md-0">
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-3 px-md-4 py-3 py-md-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-2">
+                <h1 class="h3 mb-0 text-truncate">@yield('page_title')</h1>
+                <div class="btn-toolbar mb-0 gap-2 flex-grow-1 flex-md-grow-0 flex-nowrap overflow-auto pb-1">
                     @yield('actions')
                 </div>
             </div>

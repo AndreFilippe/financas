@@ -5,30 +5,30 @@
 
 @section('content')
 <div class="row mb-4">
-    <div class="col-12 d-flex justify-content-between align-items-center mb-3">
-        <div class="btn-group shadow-sm">
-            <a href="{{ route('transactions.payable', $prevParams) }}" class="btn btn-outline-primary">
-                <i class="bi bi-chevron-left"></i> Anterior
+    <div class="col-12 d-flex flex-column flex-lg-row justify-content-between mb-3 gap-3">
+        <div class="btn-group shadow-sm w-100 w-lg-auto">
+            <a href="{{ route('transactions.payable', $prevParams) }}" class="btn btn-outline-primary px-2 px-md-3">
+                <i class="bi bi-chevron-left"></i><span class="d-none d-sm-inline"> Anterior</span>
             </a>
-            <span class="btn btn-primary px-4 fw-bold disabled opacity-100">
+            <span class="btn btn-primary px-3 px-md-4 fw-bold disabled opacity-100 text-truncate" style="max-width: 150px;">
                 {{ ucfirst($currentMonthName) }}
             </span>
-            <a href="{{ route('transactions.payable', $nextParams) }}" class="btn btn-outline-primary">
-                Próximo <i class="bi bi-chevron-right"></i>
+            <a href="{{ route('transactions.payable', $nextParams) }}" class="btn btn-outline-primary px-2 px-md-3">
+                <span class="d-none d-sm-inline">Próximo </span><i class="bi bi-chevron-right"></i>
             </a>
         </div>
 
-        <div class="d-flex gap-2">
-            <form action="{{ route('transactions.replicate-recurrences') }}" method="POST">
+        <div class="d-flex flex-column flex-sm-row gap-2 w-100 w-lg-auto">
+            <form action="{{ route('transactions.replicate-recurrences') }}" method="POST" class="w-100 w-sm-auto">
                 @csrf
                 <input type="hidden" name="month" value="{{ request('month', now()->month) }}">
                 <input type="hidden" name="year" value="{{ request('year', now()->year) }}">
-                <button type="submit" class="btn btn-outline-success shadow-sm" title="Puxar recorrências do mês anterior">
-                    <i class="bi bi-arrow-repeat"></i> Sincronizar Mês Passado
+                <button type="submit" class="btn btn-outline-success shadow-sm w-100" title="Puxar recorrências do mês anterior">
+                    <i class="bi bi-arrow-repeat"></i> <span class="d-sm-none d-md-inline">Sincronizar Mês Passado</span><span class="d-none d-sm-inline d-md-none">Repetir</span>
                 </button>
             </form>
 
-            <button type="button" class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#quickTransactionModal">
+            <button type="button" class="btn btn-primary shadow-sm w-100 w-sm-auto" data-bs-toggle="modal" data-bs-target="#quickTransactionModal">
                 <i class="bi bi-plus-lg"></i> Novo Lançamento
             </button>
         </div>
@@ -36,46 +36,46 @@
 
     <!-- Cards de Resumo Consolidado -->
     <div class="col-12 mb-4">
-        <div class="row g-3">
-            <div class="col-md">
+        <div class="row g-2 g-md-3">
+            <div class="col-6 col-md">
                 <div class="card bg-light border-0 shadow-sm h-100">
                     <div class="card-body py-2">
-                        <small class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Saldo Inicial (Geral)</small>
-                        <div class="h5 mb-0 fw-bold text-secondary">R$ {{ number_format($globalOpeningBalance, 2, ',', '.') }}</div>
+                        <small class="text-muted text-uppercase fw-bold d-block text-truncate" style="font-size: 0.65rem;">Saldo Inicial (Geral)</small>
+                        <div class="h6 h5-md mb-0 fw-bold text-secondary text-truncate">R$ {{ number_format($globalOpeningBalance, 2, ',', '.') }}</div>
                     </div>
                 </div>
             </div>
-            <div class="col-md">
+            <div class="col-6 col-md">
                 <div class="card border-0 shadow-sm border-start border-4 border-success h-100">
                     <div class="card-body py-2">
-                        <small class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Total Entradas</small>
-                        <div class="h5 mb-0 fw-bold text-success">+ R$ {{ number_format($totalIncome, 2, ',', '.') }}</div>
+                        <small class="text-muted text-uppercase fw-bold d-block text-truncate" style="font-size: 0.65rem;">Total Entradas</small>
+                        <div class="h6 h5-md mb-0 fw-bold text-success text-truncate">+ R$ {{ number_format($totalIncome, 2, ',', '.') }}</div>
                     </div>
                 </div>
             </div>
-            <div class="col-md">
+            <div class="col-6 col-md">
                 <div class="card border-0 shadow-sm border-start border-4 border-danger h-100">
                     <div class="card-body py-2">
-                        <small class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Total Saídas</small>
-                        <div class="h5 mb-0 fw-bold text-danger">- R$ {{ number_format($totalExpense, 2, ',', '.') }}</div>
+                        <small class="text-muted text-uppercase fw-bold d-block text-truncate" style="font-size: 0.65rem;">Total Saídas</small>
+                        <div class="h6 h5-md mb-0 fw-bold text-danger text-truncate">- R$ {{ number_format($totalExpense, 2, ',', '.') }}</div>
                     </div>
                 </div>
             </div>
-            <div class="col-md">
+            <div class="col-6 col-md">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body py-2">
-                        <small class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Resultado Mensal</small>
-                        <div class="h5 mb-0 fw-bold {{ $monthlyResult >= 0 ? 'text-success' : 'text-danger' }}">
+                        <small class="text-muted text-uppercase fw-bold d-block text-truncate" style="font-size: 0.65rem;">Resultado Mensal</small>
+                        <div class="h6 h5-md mb-0 fw-bold text-truncate {{ $monthlyResult >= 0 ? 'text-success' : 'text-danger' }}">
                             {{ $monthlyResult >= 0 ? '+' : '' }} R$ {{ number_format($monthlyResult, 2, ',', '.') }}
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md">
+            <div class="col-12 col-md mt-2 mt-md-0">
                 <div class="card bg-primary text-white border-0 shadow-sm h-100">
                     <div class="card-body py-2">
-                        <small class="text-white-50 text-uppercase fw-bold" style="font-size: 0.7rem;">Saldo Final Projetado</small>
-                        <div class="h5 mb-0 fw-bold">R$ {{ number_format($finalProjectedBalance, 2, ',', '.') }}</div>
+                        <small class="text-white-50 text-uppercase fw-bold d-block text-truncate" style="font-size: 0.65rem;">Saldo Final Projetado</small>
+                        <div class="h5 mb-0 fw-bold text-truncate">R$ {{ number_format($finalProjectedBalance, 2, ',', '.') }}</div>
                     </div>
                 </div>
             </div>
@@ -120,12 +120,12 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-1 d-flex gap-1">
+                    <div class="col-12 col-md-1 d-flex gap-1 mt-3 mt-md-auto">
                         <button type="submit" class="btn btn-sm btn-primary flex-fill" title="Filtrar">
-                            <i class="bi bi-filter"></i>
+                            <i class="bi bi-filter"></i> Filtrar
                         </button>
                         <a href="{{ route('transactions.payable') }}" class="btn btn-sm btn-outline-secondary" title="Limpar">
-                            <i class="bi bi-x-lg"></i>
+                            <i class="bi bi-eraser-fill"></i>
                         </a>
                     </div>
                 </form>
@@ -135,43 +135,57 @@
 </div>
 
 <div class="card mb-4 shadow-sm border-0">
-    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-        <h5 class="mb-0 text-primary fw-bold"><i class="bi bi-hourglass-split me-2"></i> A Pagar / Receber <span class="badge bg-primary ms-2">{{ $transactions->where('status', 'pending')->count() }}</span></h5>
+    <div class="card-header bg-white py-3 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
+        <h5 class="mb-0 text-primary fw-bold text-truncate"><i class="bi bi-hourglass-split me-2"></i> A Pagar / Receber <span class="badge bg-primary ms-2">{{ $transactions->where('status', 'pending')->count() }}</span></h5>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table table-hover align-middle mb-0 text-nowrap">
                 <thead class="table-light">
                     <tr>
-                        <th class="ps-4">Data Ref.</th>
+                        <th class="ps-3 ps-md-4">Data Ref.</th>
                         <th>Descrição</th>
-                        <th>Tipo</th>
-                        <th>Categoria</th>
-                        <th>Situação</th>
+                        <th class="d-none d-md-table-cell">Tipo</th>
+                        <th class="d-none d-md-table-cell">Categoria</th>
+                        <th class="d-none d-md-table-cell">Situação</th>
                         <th>Valor Previsto</th>
-                        <th class="text-end pe-4">Ação</th>
+                        <th class="text-end pe-3 pe-md-4">Ação</th>
                     </tr>
                 </thead>
                 <tbody>
                     @php $pending = $transactions->where('status', 'pending'); @endphp
                     @forelse($pending as $t)
                     <tr>
-                        <td class="ps-4 {{ $t->date < \Carbon\Carbon::now() ? 'text-danger fw-bold' : '' }}">
-                            {{ $t->date->format('d/m/Y') }}
+                        <td class="ps-3 ps-md-4 {{ $t->date < \Carbon\Carbon::now() ? 'text-danger fw-bold' : '' }}">
+                            <div class="d-flex flex-column">
+                                <span>{{ $t->date->format('d/m/Y') }}</span>
+                                <small class="d-md-none {{ $t->type == 'income' ? 'text-success' : 'text-danger' }}">
+                                    {{ $t->type == 'income' ? 'A Receber' : 'A Pagar' }}
+                                </small>
+                            </div>
                         </td>
-                        <td>{{ $t->description }}</td>
                         <td>
+                            {{ $t->description }}
+                            <div class="d-md-none text-muted small text-truncate" style="max-width: 120px;">
+                                {{ $t->category ? $t->category->name : '-' }}
+                            </div>
+                        </td>
+                        <td class="d-none d-md-table-cell">
                             @if($t->type == 'income') <i class="bi bi-arrow-up-circle-fill text-success"></i>
                             @else <i class="bi bi-arrow-down-circle-fill text-danger"></i> @endif
                         </td>
-                        <td>{{ $t->category ? $t->category->name : '-' }}</td>
-                        <td>
+                        <td class="d-none d-md-table-cell">{{ $t->category ? $t->category->name : '-' }}</td>
+                        <td class="d-none d-md-table-cell">
                             @if($t->type == 'income') <span class="badge bg-success-subtle text-success">A Receber</span>
                             @else <span class="badge bg-danger-subtle text-danger">A Pagar</span> @endif
                         </td>
-                        <td class="fw-bold">R$ {{ number_format($t->amount, 2, ',', '.') }}</td>
-                        <td class="text-end pe-4">
-                            <div class="d-flex justify-content-end gap-2">
+                        <td class="fw-bold">
+                            @if($t->type == 'income') <i class="bi bi-arrow-up-circle-fill text-success d-md-none me-1"></i>
+                            @else <i class="bi bi-arrow-down-circle-fill text-danger d-md-none me-1"></i> @endif
+                            R$ {{ number_format($t->amount, 2, ',', '.') }}
+                        </td>
+                        <td class="text-end pe-3 pe-md-4">
+                            <div class="d-flex justify-content-end gap-1 gap-md-2">
                                 @if($t->is_recurring)
                                 <form action="{{ route('transactions.stop-recurrence', $t) }}" method="POST">
                                     @csrf
@@ -189,7 +203,7 @@
                                 </a>
 
                                 <button type="button" class="btn btn-sm btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#payModal{{ $t->id }}">
-                                    <i class="bi bi-check-circle"></i> Pagar
+                                    <i class="bi bi-check-circle"></i> {{ $t->type == 'income' ? 'Receber' : 'Pagar' }}
                                 </button>
                             </div>
                         </td>
@@ -214,7 +228,7 @@
                                   </div>
                                   
                                   <div class="mb-3">
-                                      <label class="form-label">Conta de Pagamento</label>
+                                      <label class="form-label">{{ $t->type == 'income' ? 'Conta de Recebimento' : 'Conta de Pagamento' }}</label>
                                       <select name="account_id" class="form-select" required>
                                           @foreach($accounts as $acc)
                                               <option value="{{ $acc->id }}" {{ $t->account_id == $acc->id ? 'selected' : '' }}>{{ $acc->name }} (Saldo: R$ {{ number_format($acc->balance, 2, ',', '.') }})</option>
@@ -224,7 +238,7 @@
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                                <button type="submit" class="btn btn-success">Efetivar Pagamento</button>
+                                <button type="submit" class="btn btn-success">{{ $t->type == 'income' ? 'Efetivar Recebimento' : 'Efetivar Pagamento' }}</button>
                               </div>
                           </form>
                         </div>
@@ -354,20 +368,20 @@
 @endif
 
 <div class="card shadow-sm border-0">
-    <div class="card-header bg-white py-3">
-        <h5 class="mb-0 text-success fw-bold"><i class="bi bi-check2-all me-2"></i> Efetivados do Mês (Competência)</h5>
+    <div class="card-header bg-white py-3 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center">
+        <h5 class="mb-0 text-success fw-bold text-truncate"><i class="bi bi-check2-all me-2"></i> Efetivados do Mês</h5>
     </div>
     <div class="card-body p-0 text-muted">
         <div class="table-responsive">
-            <table class="table align-middle mb-0">
+            <table class="table align-middle mb-0 text-nowrap">
                 <thead class="table-light">
                     <tr>
-                        <th class="ps-4">Data Pagto</th>
-                        <th>Ref.</th>
+                        <th class="ps-3 ps-md-4">Data Pagto</th>
+                        <th class="d-none d-md-table-cell">Ref.</th>
                         <th>Descrição</th>
-                        <th>Tipo</th>
-                        <th>Conta</th>
-                        <th class="text-end pe-4">Valor</th>
+                        <th class="d-none d-md-table-cell">Tipo</th>
+                        <th class="d-none d-sm-table-cell">Conta</th>
+                        <th class="text-end pe-3 pe-md-4">Valor</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -376,20 +390,30 @@
                     @endphp
                     @forelse($paidThisRefMonth as $t)
                     <tr style="opacity: 0.8;">
-                        <td class="ps-4">{{ $t->payment_date ? $t->payment_date->format('d/m/Y') : $t->date->format('d/m/Y') }}</td>
-                        <td>{{ $t->date->format('m/Y') }}</td>
+                        <td class="ps-3 ps-md-4">
+                            <div class="d-flex flex-column">
+                                <span>{{ $t->payment_date ? $t->payment_date->format('d/m/Y') : $t->date->format('d/m/Y') }}</span>
+                                <small class="d-md-none text-muted">Ref: {{ $t->date->format('m/Y') }}</small>
+                            </div>
+                        </td>
+                        <td class="d-none d-md-table-cell">{{ $t->date->format('m/Y') }}</td>
                         <td>
                             {{ $t->description }}
+                            <div class="d-sm-none text-muted small text-truncate" style="max-width: 120px;">
+                                {{ $t->account->name }}
+                            </div>
                             @if($t->payment_date && $t->payment_date->format('Y-m') < $t->date->format('Y-m'))
-                                <span class="badge bg-info-subtle text-info ms-2">Pago Antecipado em {{ $t->payment_date->format('d/m/Y') }}</span>
+                                <span class="badge bg-info-subtle text-info d-block d-md-inline-block mt-1 mt-md-0 d-md-inline">Anticipado: {{ $t->payment_date->format('d/m/Y') }}</span>
                             @endif
                         </td>
-                        <td>
+                        <td class="d-none d-md-table-cell">
                             @if($t->type == 'income') <i class="bi bi-arrow-up-circle text-success"></i>
                             @else <i class="bi bi-arrow-down-circle text-danger"></i> @endif
                         </td>
-                        <td>{{ $t->account->name }}</td>
-                        <td class="text-end pe-4">
+                        <td class="d-none d-sm-table-cell">{{ $t->account->name }}</td>
+                        <td class="text-end pe-3 pe-md-4">
+                            @if($t->type == 'income') <i class="bi bi-arrow-up-circle-fill text-success d-md-none me-1"></i>
+                            @else <i class="bi bi-arrow-down-circle-fill text-danger d-md-none me-1"></i> @endif
                             R$ {{ number_format($t->amount, 2, ',', '.') }}
                         </td>
                     </tr>
