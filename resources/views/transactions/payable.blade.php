@@ -429,87 +429,119 @@
 </div>
 
 <!-- Modal Novo Lançamento Rápido -->
-<div class="modal fade" id="quickTransactionModal" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Novo Lançamento - {{ ucfirst($currentMonthName) }}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal fade" id="quickTransactionModal" tabindex="-1" aria-labelledby="quickTransactionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-primary text-white border-0">
+        <h5 class="modal-title fw-bold" id="quickTransactionModalLabel">
+            <i class="bi bi-plus-circle me-2"></i>Novo Lançamento - {{ ucfirst($currentMonthName) }}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form action="{{ route('transactions.store') }}" method="POST">
           @csrf
           <input type="hidden" name="redirect_to" value="{{ route('transactions.payable', ['month' => request('month', now()->month), 'year' => request('year', now()->year)]) }}">
           
-          <div class="modal-body">
-              <div class="row mb-3">
-                  <div class="col-md-6">
-                      <label class="form-label">Tipo</label>
-                      <select name="type" class="form-select" required>
-                          <option value="expense">Despesa</option>
-                          <option value="income">Receita</option>
-                      </select>
-                  </div>
-                  <div class="col-md-6">
-                      <label class="form-label">Valor (R$)</label>
-                      <input type="number" step="0.01" name="amount" class="form-control" required>
-                  </div>
-              </div>
+          <div class="modal-body p-4">
+              <div class="row g-3">
+                  <!-- Bloco de Valor e Tipo -->
+                  <div class="col-12">
+                      <div class="card bg-light border-0">
+                          <div class="card-body p-3">
+                              <div class="row g-3">
+                                  <div class="col-md-6">
+                                      <label class="form-label fw-bold text-muted small">TIPO DE TRANSAÇÃO</label>
+                                      <div class="d-flex gap-2">
+                                          <input type="radio" class="btn-check" name="type" id="type_expense" value="expense" checked required>
+                                          <label class="btn btn-outline-danger w-100 py-2" for="type_expense">
+                                              <i class="bi bi-dash-circle me-1"></i> Despesa
+                                          </label>
 
-              <div class="mb-3">
-                  <label class="form-label">Descrição</label>
-                  <input type="text" name="description" class="form-control" placeholder="Ex: Aluguel, Supermercado, Salário" required>
-              </div>
+                                          <input type="radio" class="btn-check" name="type" id="type_income" value="income" required>
+                                          <label class="btn btn-outline-success w-100 py-2" for="type_income">
+                                              <i class="bi bi-plus-circle me-1"></i> Receita
+                                          </label>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <label class="form-label fw-bold text-muted small">VALOR (R$)</label>
+                                      <div class="input-group input-group-lg">
+                                          <span class="input-group-text bg-white border-end-0">R$</span>
+                                          <input type="number" step="0.01" name="amount" class="form-control border-start-0 ps-0 fw-bold" placeholder="0,00" required>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
 
-              <div class="row mb-3">
+                  <!-- Detalhes -->
+                  <div class="col-12">
+                      <label class="form-label fw-bold small text-muted">DESCRIÇÃO</label>
+                      <input type="text" name="description" class="form-control form-control-lg" placeholder="Ex: Aluguel, Supermercado, Salário..." required>
+                  </div>
+
                   <div class="col-md-6">
-                      <label class="form-label">Conta</label>
-                      <select name="account_id" class="form-select" required>
-                          <option value="">Selecione uma conta...</option>
+                      <label class="form-label fw-bold small text-muted">CONTA</label>
+                      <select name="account_id" class="form-select form-select-lg" required>
+                          <option value="">Selecione a conta...</option>
                           @foreach($accounts as $account)
                               <option value="{{ $account->id }}">{{ $account->name }}</option>
                           @endforeach
                       </select>
                   </div>
                   <div class="col-md-6">
-                      <label class="form-label">Categoria</label>
-                      <select name="category_id" class="form-select">
-                          <option value="">Selecione...</option>
+                      <label class="form-label fw-bold small text-muted">CATEGORIA</label>
+                      <select name="category_id" class="form-select form-select-lg">
+                          <option value="">Selecione a categoria...</option>
                           @foreach($categories as $category)
                               <option value="{{ $category->id }}">{{ $category->name }}</option>
                           @endforeach
                       </select>
                   </div>
-              </div>
 
-              <div class="row mb-3">
+                  <!-- Data e Status -->
                   <div class="col-md-4">
-                      <label class="form-label">Data</label>
-                      <input type="date" name="date" class="form-control" value="{{ now()->format('Y-m-d') }}" required>
+                      <label class="form-label fw-bold small text-muted">DATA DO VENCIMENTO</label>
+                      <input type="date" name="date" class="form-control form-control-lg" value="{{ now()->format('Y-m-d') }}" required>
                   </div>
                   <div class="col-md-4">
-                      <label class="form-label">Status</label>
-                      <select name="status" class="form-select" required>
-                          <option value="pending">Pendente</option>
-                          <option value="paid">Pago / Confirmado</option>
+                      <label class="form-label fw-bold small text-muted">SITUAÇÃO</label>
+                      <select name="status" class="form-select form-select-lg" required>
+                          <option value="pending">Pendente (A Pagar/Receber)</option>
+                          <option value="paid">Confirmado (Já Pago/Recebido)</option>
                       </select>
                   </div>
-                  <div class="col-md-2 d-flex align-items-end">
-                      <div class="form-check mb-2">
-                          <input class="form-check-input" type="checkbox" name="is_recurring" value="1" id="isRecurringQuick">
-                          <label class="form-check-label" for="isRecurringQuick">
-                              Recorrente
-                          </label>
+
+                  <!-- Recorrência -->
+                  <div class="col-md-4 d-flex align-items-center mt-md-4">
+                      <div class="form-check form-switch p-0 ms-0">
+                          <div class="d-flex align-items-center gap-3 bg-light rounded p-2 px-3">
+                            <input class="form-check-input ms-0" type="checkbox" name="is_recurring" value="1" id="isRecurringQuick" role="switch" style="width: 3em; height: 1.5em;">
+                            <label class="form-check-label fw-bold pt-1" for="isRecurringQuick">Repetir mensalmente?</label>
+                          </div>
                       </div>
                   </div>
-                  <div class="col-md-2" id="repeatUntilContainerQuick" style="display: none;">
-                      <label class="form-label">Até o mês:</label>
-                      <input type="date" name="repeat_until" class="form-control">
+
+                  <div class="col-12" id="repeatUntilContainerQuick" style="display: none;">
+                      <div class="alert alert-info py-2 mb-0">
+                          <div class="row align-items-center">
+                              <div class="col-sm-8 mb-2 mb-sm-0">
+                                  <i class="bi bi-info-circle me-1"></i> Até quando esta conta deve se repetir?
+                              </div>
+                              <div class="col-sm-4">
+                                  <input type="date" name="repeat_until" class="form-control">
+                              </div>
+                          </div>
+                      </div>
                   </div>
               </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-            <button type="submit" class="btn btn-primary px-4">Salvar</button>
+          <div class="modal-footer bg-light border-0 p-3">
+            <button type="button" class="btn btn-outline-secondary px-4 py-2" data-bs-dismiss="modal">Fechar</button>
+            <button type="submit" class="btn btn-primary px-5 py-2 fw-bold">
+                <i class="bi bi-save me-2"></i>Salvar Lançamento
+            </button>
           </div>
       </form>
     </div>
