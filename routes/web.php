@@ -39,6 +39,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('transactions', TransactionController::class);
     
     Route::post('/credit-card-invoices/{invoice}/pay', [CreditCardController::class, 'payInvoice'])->name('credit-cards.pay-invoice');
+    Route::put('/credit-card-invoices/{invoice}', [CreditCardController::class, 'updateInvoice'])->name('credit-cards.update-invoice');
+    Route::delete('/credit-card-invoices/{invoice}', [CreditCardController::class, 'destroyInvoice'])->name('credit-cards.destroy-invoice');
+    Route::put('/credit-card-transactions/{transaction}', [CreditCardController::class, 'updateTransaction'])->name('credit-card-transactions.update');
+    Route::delete('/credit-card-transactions/{transaction}', [CreditCardController::class, 'destroyTransaction'])->name('credit-card-transactions.destroy');
     Route::post('/credit-card-transactions/{transaction}/update-category', [TransactionController::class, 'updateCardCategory'])->name('credit-card-transactions.update-category');
     Route::resource('credit-cards', CreditCardController::class);
     Route::post('/credit-cards/{credit_card}/transactions', [CreditCardController::class, 'addTransaction'])->name('credit-cards.transactions.store');

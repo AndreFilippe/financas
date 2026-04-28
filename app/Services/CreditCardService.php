@@ -26,6 +26,10 @@ class CreditCardService
                 
                 $invoice = $this->getOrCreateInvoiceForDate($card, $targetDate);
                 
+                if ($invoice->status !== 'open') {
+                    throw new \Exception("Não é possível adicionar transações à fatura de {$invoice->reference_month} pois ela já está fechada ou paga.");
+                }
+                
                 CreditCardTransaction::create([
                     'credit_card_invoice_id' => $invoice->id,
                     'category_id' => $data['category_id'] ?? null,
